@@ -6,16 +6,23 @@
   <link rel="stylesheet" href="poop-field.css">
 
 <body>
-  <h1>Poop Field</h1>
-  <ul>
-    <li><strong>tasto sinistro del mouse: scopre la cella</strong></li>
-    <li><strong>tasto destro del mouse: mette il flag "Poop"</strong></li>
-    <li><strong>se clicco su una Poop: Game Over</strong></li>
-    <li><strong>se clicco "start" riavvio il gioco</strong></li>
-  </ul>
-  <button id="game-start" value="start">Start</button>
-  <div id="game-field">
+  <div id="game-container">
+    <h1>Poop Field</h1>
+    <ul>
+      <li><strong>tasto sinistro del mouse: scopre la cella</strong></li>
+      <li><strong>tasto destro del mouse: mette il flag "Poop"</strong></li>
+      <li><strong>se clicco su una Poop: Game Over</strong></li>
+      <li><strong>se clicco "start" riavvio il gioco</strong></li>
+    </ul>
+    <!-- Barra superiore stile Minesweeper -->
+    <div id="game-bar">
+      <span id="mine-counter" class="display">000</span>
+      <button id="game-start" class="smile-btn" title="Start"></button>
+      <span id="timer" class="display">000</span>
+    </div>
+    <div id="game-field">
 
+    </div>
   </div>
 </body>
   <script src="poop-field.js"></script>

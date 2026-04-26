@@ -1,4 +1,7 @@
 let init = function () {
+  stopTimer();
+  updateTimerDisplay();
+  firstClick = true;
   let gameField = document.getElementById("game-field");
   gameField.classList.remove("field-bomb");
   gameField.innerHTML = '<span class="game-over">GAME OVER</span>';
@@ -195,24 +198,22 @@ let init = function () {
       (function (i, j) {
         document
           .getElementById("B" + i + j)
-          .addEventListener("click", function () {
+          .addEventListener("click", function (event) {
             if (rd[i][j] == "x") {
               this.classList.add("cell-bomb");
               gameField.classList.toggle("field-bomb");
+              stopTimer();
             } else if (rd[i][j] == "0") {
               this.classList.add("cell-empty");
             } else {
               this.classList.add("cell-near");
             }
           });
-      })(i, j);
-      //dblclick
-      (function (i, j) {
-        document
-          .getElementById("B" + i + j)
-          .addEventListener("contextmenu", function (e) {
+          document
+            .getElementById("B" + i + j).addEventListener("contextmenu", function (e) {
             e.preventDefault();
             this.classList.toggle("cell-flag");
+            updateMineCounterDisplay(document.getElementsByClassName("cell-flag").length);
           });
       })(i, j);
     }
@@ -220,4 +221,74 @@ let init = function () {
   //numeri random da 0 a 9
   // Math.floor(Math.random()*10)
 };
+
+// Timer globale
+let timerInterval = null;
+let timerValue = 0;
+let firstClick = true;
+
+function startTimer() {
+  stopTimer();
+  timerValue = 0;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timerValue++;
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function updateTimerDisplay() {
+  const timerEl = document.getElementById('timer');
+  if (timerEl) {
+    timerEl.textContent = String(timerValue).padStart(3, '0');
+  }
+}
+
+// Modifica funzione init per resettare timer
+const oldInit = init;
+init = function () {
+  stopTimer();
+  updateTimerDisplay();
+  firstClick = true;
+  oldInit();
+};
+
+// Avvia timer al primo click su una cella
+function enableFirstClickTimer() {
+  const cells = document.querySelectorAll('.cella');
+  cells.forEach(cell => {
+    cell.addEventListener('click', function handler() {
+      if (firstClick) {
+        startTimer();
+        firstClick = false;
+      }
+      cell.removeEventListener('click', handler);
+    });
+  });
+}
+
+function updateMineCounterDisplay(number) {
+  const mineCounterEl = document.getElementById('mine-counter');
+  if (mineCounterEl) {
+    mineCounterEl.textContent = String(number).padStart(3, '0');
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  enableFirstClickTimer();
+});
+
+// Richiama enableFirstClickTimer dopo ogni init
+const oldInit2 = init;
+init = function () {
+  oldInit2();
+  enableFirstClickTimer();
+};
+
 init();
