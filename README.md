@@ -22,4 +22,4 @@ Inspired by Minesweeper, but with higher stakes.
 Vanilla HTML / CSS / JavaScript.
 
 ## Live demo
-https://codepen.io/Giacalone/full/yLdEVNM
+https://huges.github.io/poop-field/
